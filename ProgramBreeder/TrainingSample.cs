@@ -64,7 +64,7 @@ namespace ProgramBreeder
 
 	abstract class TrainingSamplesGenerator
 	{
-		protected static Random r = new Random(123);
+		protected static Random r => Program.r;
 		/// <summary>
 		/// Returns a sequence of training samples. Never call Count or other dangerous extension methods on this as the resulting sequence might be potentially infinite!!! 
 		/// If you only want a fixed number of samples, use the method with argument.
@@ -169,10 +169,13 @@ namespace ProgramBreeder
 	{
 		public override IEnumerable<TrainingSample> generateSamples()
 		{
-			int first = r.Next(1000000);
-			int second = r.Next(1000000);
-			int result = first > second ? first : second;
-			yield return new TrainingSample(new int[] { first, second }, new int[] { result });
+			while (true)
+			{
+				int first = r.Next(1000000);
+				int second = r.Next(1000000);
+				int result = first > second ? first : second;
+				yield return new TrainingSample(new int[] { first, second }, new int[] { result });
+			}
 		}
 	}
 

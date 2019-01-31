@@ -9,7 +9,7 @@ namespace ProgramBreeder
 {
 	class SearchMethodsSupport
 	{
-		protected static Random r = new Random();
+		protected static Random r => Program.r;
 
 		/// <summary>
 		/// Creates a new node that is "default" for given class. For "directive" the default value is TerminalDirective, for "boolean" the default is BoolConstant with value "false", and for numeric the default is "NumericConstant" with value 0.
@@ -91,8 +91,8 @@ namespace ProgramBreeder
 			switch (type)
 			{
 				case NodeType.BoolConstant:
-					yield return new BoolConstant(false);
-					yield return new BoolConstant(true);
+					//yield return new BoolConstant(false);	//boolean constants are no longer supported
+					//yield return new BoolConstant(true);
 					break;
 
 				case NodeType.NumConst:
@@ -112,6 +112,35 @@ namespace ProgramBreeder
 				default:		
 					n = createPrototypeNode(type);
 					yield return n;
+					break;
+			}
+		}
+
+		/// <summary>
+		/// Returns all posible non-constant terminal nodes of given type.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public static IEnumerable<Node> enumerateAllNonConstantTerminalNodes(NodeClass cl, NodeCreationConstrains constrains = null)
+		{
+			Node n;
+			int limit = 2;
+			switch (cl)
+			{
+				case NodeClass.boolean:
+					//yield return new BoolConstant(false);	//boolean constants are no longer supported
+					//yield return new BoolConstant(true);
+					break;
+
+				case NodeClass.numeric:
+					for (int i = 0; i < limit; i++)
+					{
+						yield return new ValueGetter(new NumericConstant(i));
+					}
+					
+					break;
+
+				case NodeClass.directive:
 					break;
 			}
 		}
@@ -188,13 +217,13 @@ namespace ProgramBreeder
 
 			if (depth == 1)
 			{
-				foreach (var type in EnumUtils.getTerminalTypes(rootNodeClass))
-				{
-					foreach (var node in enumerateAllNodes(type, constrains))
+				//foreach (var type in EnumUtils.getTerminalTypes(rootNodeClass))
+				//{
+					foreach (var node in enumerateAllNonConstantTerminalNodes(rootNodeClass, constrains))
 					{
 						yield return node;
 					}
-				}
+				//}
 			}
 
 			else
@@ -484,5 +513,6 @@ namespace ProgramBreeder
 			this.value = v;
 		}
 	}
+
 
 }

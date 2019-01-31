@@ -52,7 +52,7 @@ namespace Interpreter
 			var next = getNextDirective();
 			if(next != null)
 			{
-				sb.AppendLine(next.toSourceCode());
+				sb.Append(next.toSourceCode());
 			}
 			return sb.ToString();
 		}
@@ -243,7 +243,7 @@ namespace Interpreter
 
         public override string ToString()
         {
-            return "Var(" + varIndex.ToString() + ")" + " := " + value.ToString();
+            return "Var[" + varIndex.ToString() + "]" + " := " + value.ToString() + ";";
         }
 
 		public override string getLabel()
@@ -292,7 +292,7 @@ namespace Interpreter
 
         public override string ToString()
         {
-            return "Var(" + variableIndex.ToString() + ")" + "++";
+            return "Var[" + variableIndex.ToString() + "]" + "++" + ";";
         }
 
 		public override string getLabel()
@@ -334,7 +334,7 @@ namespace Interpreter
 
         public override string ToString()
         {
-            return "Var(" + variableIndex.ToString() + ")" + "--";
+            return "Var[" + variableIndex.ToString() + "]" + "--" + ";";
         }
 
 		public override string getLabel()
@@ -378,7 +378,7 @@ namespace Interpreter
 
         public override string ToString()
         {
-            return "List(" + listIndex.ToString() + ").AddLast(" + value.ToString() + ")";
+            return "List[" + listIndex.ToString() + "].AddLast(" + value.ToString() + ")" + ";";
         }
 
 		public override string getLabel()
@@ -424,7 +424,7 @@ namespace Interpreter
 
         public override string ToString()
         {
-            return "List(" + listIndex.ToString() + ").AddFirst(" + value.ToString() + ")";
+            return "List[" + listIndex.ToString() + "].AddFirst(" + value.ToString() + ")" + ";";
         }
 
 		public override string getLabel()
@@ -469,7 +469,7 @@ namespace Interpreter
 
         public override string ToString()
         {
-            return "List(" + listIndex.ToString() + ").RemoveFirst()";
+            return "List[" + listIndex.ToString() + "].RemoveFirst()" + ";";
         }
 
 		public override string getLabel()
@@ -512,7 +512,7 @@ namespace Interpreter
 
         public override string ToString()
         {
-            return "List(" + listIndex.ToString() + ").RemoveLast()";
+            return "List[" + listIndex.ToString() + "].RemoveLast()" + ";";
         }
 
 		public override string getLabel()
@@ -568,7 +568,7 @@ namespace Interpreter
 			string r = "";
 			for (int i = 0; i < indent; i++)
 				r = r + "\t";
-			r = r + "FOR(;" + "Var(" + varIndex.ToString() + ")" + " < " + limitVal.ToString() + "; " + "Var(" + varIndex.ToString() + ")" + "++)\n";
+			r = r + "FOR(;" + "Var[" + varIndex.ToString() + "]" + " < " + limitVal.ToString() + "; " + "Var[" + varIndex.ToString() + "]" + "++)\n";
 			indent++;
 			r = r + directive.ToString();
 			indent--;
@@ -738,7 +738,7 @@ namespace Interpreter
 
 		public override string ToString()
 		{
-			return "result(" + outpuIndex.ToString() + ") := " + value.ToString();
+			return "result[" + outpuIndex.ToString() + "] := " + value.ToString() + ";";
 		}
 
 		public override string getLabel()
@@ -779,6 +779,11 @@ namespace Interpreter
 		protected override void createSlots()
 		{
 			this.successors = NodeSuccessors.empty;
+		}
+
+		public override string ToString()
+		{
+			return "End;";
 		}
 
 		public directiveTerminal()

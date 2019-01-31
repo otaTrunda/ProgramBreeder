@@ -22,6 +22,7 @@ namespace Interpreter
 
 	#region constants
 
+	[Obsolete]
 	public class BoolConstant :BoolNode
     {
         private bool value;

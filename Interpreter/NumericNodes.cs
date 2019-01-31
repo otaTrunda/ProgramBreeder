@@ -80,7 +80,7 @@ namespace Interpreter
 
         public override string ToString()
         {
-            return "Input(" + inputIndex + ")";
+            return "Input[" + inputIndex + "]";
         }
 
         public InputNode(int inputIndex)

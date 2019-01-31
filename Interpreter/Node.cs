@@ -363,6 +363,21 @@ namespace Interpreter
 					return false;
 			}
 		}
+
+		public bool isOK()
+		{
+			return true;
+		}
+
+		private List<Node> allAddedNodes;
+
+		public void logNodeAdded(Node n)
+		{
+			allAddedNodes.Add(n);
+		}
+
+
+
 	}
 
 	public enum NodeCreationContrainsOption
@@ -535,6 +550,8 @@ namespace Interpreter
 		private static Lazy<List<NodeType>> allTypes = new Lazy<List<NodeType>>(createAllTypes);
 		private static Lazy<List<NodeClass>> allClases = new Lazy<List<NodeClass>>(createAllNodeClasses);
 		private static Lazy<Dictionary<NodeClass, List<NodeType>>> typesByClasses = new Lazy<Dictionary<NodeClass, List<NodeType>>>(createTypesByClasses);
+		private static Lazy<List<NodeType>> allWriteNodeTypes = new Lazy<List<NodeType>>(createWriteNodeTypes);
+		private static Lazy<Dictionary<NodeClass, List<NodeType>>> writeTypesByClasses = new Lazy<Dictionary<NodeClass, List<NodeType>>>(createWriteTypesByClasses);
 
 		public static NodeClass getClassFromType(NodeType t)
 		{
@@ -630,7 +647,7 @@ namespace Interpreter
 
 		private static List<NodeType> createNonterminalTypes()
 		{
-			return getAllTypes().Where(t => NodeFactory.createNode(t).successors.count != 0).ToList();
+			return getAllTypes().Where(t => t != NodeType.dirEntryPoint && NodeFactory.createNode(t).successors.count != 0).ToList();
 		}
 
 		/// <summary>
@@ -667,6 +684,36 @@ namespace Interpreter
 		public static IEnumerable<NodeType> getNonterminalTypes(NodeClass cl)
 		{
 			return nonTerminalTypes.Value.Where(t => getClassFromType(t) == cl);
+		}
+
+		private static List<NodeType> createWriteNodeTypes()
+		{
+			return new List<NodeType>()
+			{
+				NodeType.dirAddFirst,
+				NodeType.dirAddLast,
+				NodeType.dirAssign,
+				NodeType.dirDecrement,
+				NodeType.dirIncrement,
+				NodeType.dirRemoveFirst,
+				NodeType.dirRemoveLast,
+				NodeType.dirSetOutput,
+			};
+		}
+
+		private static Dictionary<NodeClass, List<NodeType>> createWriteTypesByClasses()
+		{
+			return getAllNodeClasses().ToDictionary(c => c, c => allWriteNodeTypes.Value.Where(t => getClassFromType(t) == c).ToList());
+		}
+
+		/// <summary>
+		/// NodeType is considered "writeType" if it writes something, i.e. if it changes value of some variable.
+		/// </summary>
+		/// <param name="cl"></param>
+		/// <returns></returns>
+		public static IEnumerable<NodeType> getWriteNodeTypes(NodeClass cl)
+		{
+			return writeTypesByClasses.Value[cl];
 		}
 
 	}

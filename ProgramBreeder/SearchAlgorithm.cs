@@ -33,6 +33,7 @@ namespace ProgramBreeder
 		protected virtual double evaluate(int batchSize, SolutionProgram p)
 		{
 			int currectCount = 0;
+			//var samples = generator.generateSamples(batchSize).ToList();
 			foreach (var sample in generator.generateSamples(batchSize))
 			{
 				p.evaluate(sample, i);
@@ -202,8 +203,9 @@ namespace ProgramBreeder
 						bestPerformance = performance;
 						bestProgram = program;
 						Console.WriteLine("best program: ");
-						Console.WriteLine(bestProgram.ToString());
-						Console.WriteLine($"performance: {bestPerformance}");
+						Console.Write(bestProgram.ToString());
+						Console.WriteLine($"performance: {bestPerformance} %");
+						Console.WriteLine();
 						if (performance >= 100)
 						{
 							Console.WriteLine("solution found");

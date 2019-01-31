@@ -9,6 +9,8 @@ namespace ProgramBreeder
 {
 	class Program
 	{
+		public static Random r = new Random(1234);
+
 		//TODO 
 		//dodelat spravne odsazovani u metody tostring u Nodu
 
@@ -96,7 +98,7 @@ namespace ProgramBreeder
 			
 			//enumerates and visualizes all trees with depth <= given number
 			int depth = 2;
-			foreach (var item in SearchMethodsSupport.enumerateAllTrees(NodeClass.directive, depth))
+			foreach (var item in SearchMethodsSupport.enumerateAllTrees(NodeClass.numeric, depth))
 			{
 				new GraphVisualizer().visualizeDialog(ProgramTreeDrawer.createGraph(item));
 			}

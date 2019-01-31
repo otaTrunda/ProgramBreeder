@@ -138,5 +138,74 @@ namespace Interpreter
 
 	}
 
+	public static class ConstrainEvaluationSupport
+	{
+		public static IEnumerable<Node> GetAllNodesFromSubtree(Node root)
+		{
+			yield return root;
+			foreach (var item in root.successors.getSlots().Select(s => s.nodeConnectedToSlot))
+			{
+				foreach (var succ in GetAllNodesFromSubtree(item))
+				{
+					yield return succ;
+				}
+			}
+		}
+
+	}
+
+	/// <summary>
+	/// Represents a required relation between newly added nodes and nodes already present
+	/// </summary>
+	class Constrain
+	{
+		private string description;
+
+		public string getDescription()
+			=> description;
+
+		public Func<List<Node>, Node, bool> canBeAdded;
+		public Func<List<Node>, bool> canBeSatisfied;
+
+		public Constrain(string description, Func<List<Node>, Node, bool> canBeAdded = null, Func<List<Node>, bool> canBeSatisfied = null)
+		{
+			this.description = description;
+			this.canBeAdded = canBeAdded == null ? new Func<List<Node>, Node, bool>((x, y) => true) : canBeAdded;
+			this.canBeSatisfied = canBeSatisfied == null ? new Func<List<Node>, bool>(q => true) : canBeSatisfied;
+		}
+
+		public static List<Constrain> standardConstrains = new List<Constrain>()
+		{
+			/*
+					new Constrain("body of every for loop must contain the loop variable",
+						new Func<List<Node>, Node, bool>((x, y) => true),
+						new Func<List<Node>, bool>(q =>
+						{
+							var forLoopNodes = q.Where(n => n.type == NodeType.dirFor).Select(n => (directiveFOR)n);
+							return forLoopNodes.All(n =>
+							{
+								var loopVarIndex = 
+							})
+							return true;
+						}));
+			*/
+			/*
+			new Constrain("",
+				canBeAdded: new Func<List<Node>, Node, bool>((x, n) =>
+				{
+					if (n.type == NodeType.ListGetFirst || n.type == NodeType.ListGetLast || n.type == NodeType.ListGetValue || n.type == NodeType.ListSizeGetter)
+					{
+						var listIndex = n.successors.GetSlot(0);
+
+					}
+				}
+				)
+			*/
+		};
+
+
+	}
+
+
 
 }
