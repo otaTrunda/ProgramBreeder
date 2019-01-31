@@ -133,7 +133,7 @@ namespace ProgramBreeder
 
 		public override SolutionProgram search(TimeSpan timeLimit)
 		{
-			watch = Stopwatch.StartNew(); 
+			watch = Stopwatch.StartNew();
 			var bestProgram = new SolutionProgram((DirectiveNode)SearchMethodsSupport.createRandomTree(NodeClass.directive, profile, maxDepth));
 			var bestPerformance = evaluate(batchSize, bestProgram);
 			Console.WriteLine("best program: ");
