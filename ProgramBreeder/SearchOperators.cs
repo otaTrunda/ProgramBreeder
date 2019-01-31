@@ -8,7 +8,7 @@ namespace ProgramBreeder
 {
     abstract class SearchOperator
     {
-		protected static Random r = new Random();
+		protected static Random r => Program.r;
     }
 
     abstract class UnarySearchOperator : SearchOperator
@@ -54,7 +54,7 @@ namespace ProgramBreeder
 
 	abstract class Selector<T>
 	{
-		protected static Random r = new Random();
+		protected static Random r => Program.r;
 		public abstract EvaluatedEntity<T> select(List<EvaluatedEntity<T>> candidates);
 	}
 

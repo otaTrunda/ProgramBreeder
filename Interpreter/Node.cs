@@ -347,7 +347,7 @@ namespace Interpreter
 	/// <summary>
 	/// Represents some constrains that has to hold during creation of nodes. E.g. that the node must not be a constant etc.
 	/// </summary>
-	public class NodeCreationConstrains : HashSet<NodeCreationContrainsOption>
+	public class NodeCreationConstrains
 	{
 		public static NodeCreationConstrains empty = new NodeCreationConstrains();
 
@@ -370,13 +370,23 @@ namespace Interpreter
 		}
 
 		private List<Node> allAddedNodes;
+		private List<Constrain> constrains;
 
 		public void logNodeAdded(Node n)
 		{
 			allAddedNodes.Add(n);
 		}
 
+		public NodeCreationConstrains()
+		{
+			allAddedNodes = new List<Node>();
+			constrains = Constrain.standardConstrains;
+		}
 
+		public bool canBeAdded(Node n)
+		{
+			return constrains.All(c => c.canBeAdded(this.allAddedNodes, n));
+		}
 
 	}
 

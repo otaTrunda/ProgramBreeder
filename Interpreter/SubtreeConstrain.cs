@@ -177,30 +177,32 @@ namespace Interpreter
 		public static List<Constrain> standardConstrains = new List<Constrain>()
 		{
 			/*
-					new Constrain("body of every for loop must contain the loop variable",
-						new Func<List<Node>, Node, bool>((x, y) => true),
-						new Func<List<Node>, bool>(q =>
-						{
-							var forLoopNodes = q.Where(n => n.type == NodeType.dirFor).Select(n => (directiveFOR)n);
-							return forLoopNodes.All(n =>
-							{
-								var loopVarIndex = 
-							})
-							return true;
-						}));
+			new Constrain("body of every for loop must contain the loop variable",
+				new Func<List<Node>, Node, bool>((x, y) => true),
+				new Func<List<Node>, bool>(q =>
+				{
+					var forLoopNodes = q.Where(n => n.type == NodeType.dirFor).Select(n => (directiveFOR)n);
+					return forLoopNodes.All(n =>
+					{
+						var loopVarIndex = 
+					})
+					return true;
+				}));
 			*/
-			/*
-			new Constrain("",
+			
+			new Constrain("Something has to be added to some list before their values are read",
 				canBeAdded: new Func<List<Node>, Node, bool>((x, n) =>
 				{
 					if (n.type == NodeType.ListGetFirst || n.type == NodeType.ListGetLast || n.type == NodeType.ListGetValue || n.type == NodeType.ListSizeGetter)
 					{
-						var listIndex = n.successors.GetSlot(0);
-
+						//var listIndex = n.successors.GetSlot(0);
+						if (x.Any(p => p.type == NodeType.dirAddFirst || p.type == NodeType.dirAddLast))
+							return true;
+						return false;
 					}
-				}
-				)
-			*/
+					return true;
+				}))
+			
 		};
 
 

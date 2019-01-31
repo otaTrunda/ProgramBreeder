@@ -222,6 +222,7 @@ namespace ProgramBreeder
 					foreach (var node in enumerateAllNonConstantTerminalNodes(rootNodeClass, constrains))
 					{
 						yield return node;
+						//TODO!!
 					}
 				//}
 			}
