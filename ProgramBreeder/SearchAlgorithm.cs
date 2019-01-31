@@ -148,7 +148,7 @@ namespace ProgramBreeder
 				{
 					bestPerformance = performance;
 					bestProgram = program;
-					Console.WriteLine("best program: ");
+					Console.WriteLine("best program:  ");
 					Console.WriteLine(bestProgram.ToString());
 					Console.WriteLine($"performance: {bestPerformance}");
 				}
